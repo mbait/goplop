@@ -1,0 +1,2 @@
+Oplop is a GTK application that generates account passwords based on a nickname
+and a master password. The algorithm is known as "oplop".
