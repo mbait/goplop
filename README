@@ -1,2 +1,10 @@
 Oplop is a GTK application that generates account passwords based on a nickname
 and a master password. The algorithm is known as "oplop".
+
+Installation
+------------
+1. Debian/Ubuntu.
+`sudo apt-add-repository ppa:asolovets/goplop && sudo apt-get install goplop`.
+
+2. Generic GNU/Linux.
+`autoreconf && make && sudo make install`.
