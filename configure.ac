@@ -1,5 +1,5 @@
 AC_PREREQ(2.60)
-AC_INIT([goplop], [1.0], [asolovets@hotmail.com])
+AC_INIT([goplop], [1.0.1], [asolovets@hotmail.com])
 AC_CONFIG_AUX_DIR([build-aux])
 AM_INIT_AUTOMAKE([1.9.6 -Wall -Werror dist-bzip2])
 

@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-#include <stdio.h>
 #include <string.h>
 #include <gtk/gtk.h>
 #include <openssl/evp.h>
@@ -85,23 +84,11 @@ genpass(const char *nick, const char *master)
 static void
 on_response(GtkDialog *dialog, gint response, gpointer data)
 {
-  static const char cliptool[] = "xclip -sel clipboard";
-  GtkEntry **creds;
-  FILE *p;
-
-  if( G_LIKELY(response == GTK_RESPONSE_OK) ) {
-    creds = (GtkEntry **) data;
-    p = popen(cliptool, "w");
-    fputs(genpass(gtk_entry_get_text(creds[0]),
-                  gtk_entry_get_text(creds[1])),
-          p);
-    pclose(p);
-
-    g_print("Account password copied to the clipboard using '");
-    g_print(cliptool);
-    g_print("'\n");
-  }
-
+  GtkEntry **creds = (GtkEntry **) data;
+  gtk_clipboard_set_text(gtk_clipboard_get(GDK_SELECTION_CLIPBOARD),
+                         genpass(gtk_entry_get_text(creds[0]),
+                                 gtk_entry_get_text(creds[1])),
+                         -1);
   gtk_main_quit();
 }
 
