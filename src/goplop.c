@@ -22,8 +22,8 @@
 static char *
 genpass(const char *nick, const char *master)
 {
-#define PASS_LEN 8
-  static char pass[PASS_LEN + 1];
+#define PASS_LEN 10
+  static char pass[PASS_LEN + 3];
   char md5[MD5_DIGEST_LENGTH];
   MD5_CTX md5ctx;
   BIO *bio, *b64;
