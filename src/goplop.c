@@ -20,7 +20,7 @@
 #include <openssl/md5.h>
 
 static char *
-genpass(const char *nick, const char *master)
+genpass(const char *nick, const char *master, int addextra)
 {
 #define PASS_LEN 10
   static char pass[PASS_LEN + 3];
@@ -78,6 +78,12 @@ genpass(const char *nick, const char *master)
     }
   }
 
+  /* Append "1?" to satisfy some paranoid sites. */
+  if (addextra) {
+    pass[i++] = '1';
+    pass[i++] = '?';
+  }
+
   return pass;
 }
 
@@ -87,7 +93,8 @@ on_response(GtkDialog *dialog, gint response, gpointer data)
   GtkEntry **creds = (GtkEntry **) data;
   gtk_clipboard_set_text(gtk_clipboard_get(GDK_SELECTION_CLIPBOARD),
                          genpass(gtk_entry_get_text(creds[0]),
-                                 gtk_entry_get_text(creds[1])),
+                                 gtk_entry_get_text(creds[1]),
+				 gtk_toggle_button_get_active(creds[2])),
                          -1);
   gtk_main_quit();
 }
@@ -101,7 +108,7 @@ main (gint argc, gchar *argv[])
 
   GtkWidget *win = NULL;
   GtkWidget *hbox;
-  GtkWidget *creds[2];
+  GtkWidget *creds[3];
 
   win = gtk_dialog_new_with_buttons(_("GOplop"),
                                     NULL,
@@ -134,6 +141,9 @@ main (gint argc, gchar *argv[])
   gtk_box_pack_start((GtkBox*) hbox, creds[1], TRUE, TRUE, 4);
   gtk_box_pack_start((GtkBox*) ((GtkDialog*)win)->vbox,
                      hbox, FALSE, FALSE, 8 );
+
+  creds[2] = gtk_check_button_new_with_label(_("Append \"1?\" to generated hash"));
+  gtk_box_pack_start((GtkBox *) ((GtkDialog *) win)->vbox, creds[2], FALSE, FALSE, 8);
 
   g_signal_connect(win, "response", G_CALLBACK(on_response), creds);
 
